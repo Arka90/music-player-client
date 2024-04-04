@@ -6,21 +6,53 @@ import { Box, Typography } from "@mui/material";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { ScaleLoader } from "react-spinners";
 import  FavoriteBorderIcon  from '@mui/icons-material/FavoriteBorder';
+import { favrouteSongsAtom } from "@/store/favoriteSongs";
+import { FavoriteOutlined } from "@mui/icons-material";
 
-const MusicCard = ({ music, index }: { music: any; index: any }) => {
+const MusicCard = ({ music, index , isFavroute }: { music: any; index: any , isFavroute?:boolean }) => {
   const [activeSong, setActiveSong] = useAtom(activeSongAtom);
   const [playlist, setPlaylist] = useAtom(playlistAtom);
+  const [favrouteSongs , setFavrouteSongs] = useAtom(favrouteSongsAtom)
   const play = useAtomValue(playAtom)
   const albums = useAtomValue(allAlbumsAtom);
 
   function handeMusicClick() {
+
+    if(isFavroute){
+
+        setPlaylist(favrouteSongs);
+        setActiveSong(index)
+        return
+
+    }
+
+
     const activePlaylist = albums.find(
       (album: any) => album._id === music.album
     );
     setPlaylist(activePlaylist.musics);
     setActiveSong(index);
   }
+  function handelFavorite(){
+    if(favrouteSongs.length == 0){
+      setFavrouteSongs([music]);
+    }else{
+      const isSongExsists = favrouteSongs.find(
+        (song: any) => song._id === music._id
+      );
 
+      if(isSongExsists){
+
+        const newFavList = favrouteSongs.filter((song:any)=> song._id !== music._id);
+        setFavrouteSongs(newFavList);
+
+      }else{
+        setFavrouteSongs((prev:any)=>[...prev , music])
+      }
+      
+    }
+
+  }
 
   
   return (
@@ -28,7 +60,6 @@ const MusicCard = ({ music, index }: { music: any; index: any }) => {
       sx={{
         display: "flex",
         alignItems: "center",
-
         padding: "5px",
         cursor: "pointer",
         paddingX: "15px",
@@ -43,7 +74,12 @@ const MusicCard = ({ music, index }: { music: any; index: any }) => {
       onClick={handeMusicClick}
     >
       <Box sx={{
-        width:"3%"
+        width:"3%",
+
+        '@media (max-width: 960px)': {
+          width:"10%"
+        }
+
       }}>
         {playlist[activeSong]?._id == music?._id && play ? <ScaleLoader width={2} height={18} margin={1} color="#1db954" /> : <Typography variant="subtitle1">{index + 1}</Typography>}
 
@@ -58,24 +94,71 @@ const MusicCard = ({ music, index }: { music: any; index: any }) => {
          
         }}
       >
-        <Typography variant="subtitle1">{music?.name}</Typography>
-        <Box 
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        width="60%"
-        >
-        <Box>
-        <FavoriteBorderIcon 
+        <Box
         
         sx={{
+        
+          display:'flex',
+          alignItems:"center",
+          justifyContent:"space-between",
+          width:"30%",
+          '@media (max-width: 670px)': {
+            width:"50%"
+          }
+
+        }}
+
+        
+        >
+        <Typography 
+        variant="subtitle1">{music?.name}</Typography>
+        
+        <Box
+        onClick={handelFavorite}
+        >
+        {favrouteSongs.findIndex((song:any) => song._id === music._id) == -1 ? <FavoriteBorderIcon 
+        sx={{
           color:  "#1db954"
-       }} fontSize="medium"
-
-
-        />
+        }} 
+        fontSize="medium"
+        />  : <FavoriteOutlined 
+        
+        sx={{
+          color:"#1db954"
+        }}
+        
+        /> }
         </Box>
-        <Typography variant="subtitle1">{music?.description}</Typography>
+
+        </Box>
+        <Box 
+
+        sx={
+          {
+
+            display:"flex",
+            alignItems:"center",
+            justifyContent:"space-between",
+            width:"60%",
+
+            '@media (max-width: 670px)': {
+              width:"20%"
+            }
+          }
+        }
+        >
+
+        <Typography
+        
+        sx={
+          {
+            '@media (max-width: 670px)': {
+              display:"none"
+            }
+          }
+        }
+        
+        variant="subtitle1">{music?.description}</Typography>
         <Typography variant="subtitle1">{music?.duration}</Typography>
         </Box>
 

@@ -1,16 +1,19 @@
-import { Box } from "@mui/material"
+import { showMenuAtom } from "@/store/showMenu";
+import { Box, Typography } from "@mui/material"
+import { useSetAtom } from "jotai";
 
 const AlbumCard = ({album , setActiveAlbum , activeAlbum}:any) => {
 
+  const setShowMenu = useSetAtom(showMenuAtom)
 
   function handelAlbumClick(){
     setActiveAlbum(album._id);
+    setShowMenu(false)
   }
 
   return (
     <Box 
     sx={{
-      overflow:"hidden",
       display:"flex",
       alignItems:"center",
       gap:"20px",
@@ -27,8 +30,8 @@ const AlbumCard = ({album , setActiveAlbum , activeAlbum}:any) => {
       <img height={50} width={50} src={`http://localhost:8080/uploads/${album.image}`} />
       
       <Box>
-          <h3>{album.name}</h3>
-          <p>Total song : {album.musics.length}</p>
+          <Typography>{album.name}</Typography>
+          <Typography variant="caption">Total song : {album.musics.length}</Typography>
       </Box>
 
     </Box>

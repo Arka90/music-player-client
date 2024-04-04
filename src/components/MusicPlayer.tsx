@@ -32,7 +32,7 @@ const MusicPlayer = () => {
 
 
   return (
-    <Box>
+    <Box >
     <AudioPlayer
       style={{ color: "#fff", background: "#121212" }}
       onEnded={handelEndOfSong}

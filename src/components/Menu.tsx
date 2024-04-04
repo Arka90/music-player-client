@@ -2,21 +2,15 @@ import { Box, Typography } from "@mui/material"
 import AlbumCard from "./AlbumCard"
 import { useEffect, useState } from "react"
 import axios from "axios";
-import {useAtom, useSetAtom} from 'jotai'
+import {useAtom} from 'jotai'
 import { activeAlbumAtom } from "@/store/activeAlbum";
 import { allAlbumsAtom } from "@/store/allAlbums";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { FavoriteOutlined, Home } from "@mui/icons-material";
-import { showMenuAtom } from "@/store/showMenu";
+
+const Menu = () => {
 
 
-const Sidenav = () => {
-
-
-  const [showMenu , setShowMenu] = useAtom(showMenuAtom)
-
-
-  
 
   const [albums , setAlbums] = useAtom(allAlbumsAtom);
 
@@ -51,8 +45,11 @@ const Sidenav = () => {
       gap:"10px",
 
 
-
-    }}>
+    }}
+    
+    
+    boxShadow={1}
+    >
 
       <Box>
 
@@ -62,13 +59,10 @@ const Sidenav = () => {
           alignItems:"center",
           gap:"15px",
           marginBottom:"18px",
-          marginTop:"18px",
+          marginTop:"40px",
           cursor:"pointer"
         }}
-        onClick={()=>{
-          setShowMenu(false)
-          setActiveAlbum("")
-      }
+        onClick={()=>setActiveAlbum("")
         }
         >
 
@@ -97,10 +91,7 @@ const Sidenav = () => {
       cursor:"pointer"
     }}
     
-    onClick={() => {
-    setShowMenu(false)
-      setActiveAlbum("favorites")
-    }}
+    onClick={() => setActiveAlbum("favorites")}
 
     >
 
@@ -130,4 +121,4 @@ const Sidenav = () => {
   )
 }
 
-export default Sidenav
+export default Menu

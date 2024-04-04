@@ -2,7 +2,7 @@ import { activeSongAtom } from "@/store/activeSong";
 import { allAlbumsAtom } from "@/store/allAlbums";
 import { playAtom } from "@/store/play";
 import { playlistAtom } from "@/store/playlist";
-import { PlayArrow } from "@mui/icons-material"
+import { Pause, PlayArrow } from "@mui/icons-material"
 import { Box, Button, IconButton, Typography } from "@mui/material"
 import { useAtom, useAtomValue } from "jotai";
 
@@ -13,7 +13,7 @@ const HomeMusicCard = ({music}:{music:any}) => {
   const [playlist, setPlaylist] = useAtom(playlistAtom);
   const play = useAtomValue(playAtom)
   const albums = useAtomValue(allAlbumsAtom);
-
+  const songPlaying = playlist[activeSong];
 
   
 
@@ -66,10 +66,10 @@ sx={{
   }
 }}
 
-           variant="contained" 
-  onClick={handleMusicClick}
+        variant="contained" 
+        onClick={handleMusicClick}
         >
-          <PlayArrow fontSize="small" />
+          {songPlaying?._id == music._id && play ? <Pause fontSize="small" /> :  <PlayArrow fontSize="small" />}
         </Button>
       </Box>
 

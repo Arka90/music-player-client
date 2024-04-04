@@ -7,12 +7,13 @@ import MusicCard from "./MusicCard";
 import {  useAtom, useAtomValue } from "jotai";
 import { activeAlbumAtom } from "@/store/activeAlbum";
 import { playAtom } from "@/store/play";
+import { favrouteSongsAtom } from './../store/favoriteSongs';
 
 
 const Favorites = () => {
   const [album , setAlbum] = useState<any>();
   const activeAlbum = useAtomValue(activeAlbumAtom);
-
+  const favrouteSongs = useAtomValue(favrouteSongsAtom)
   const [play,setPlay] = useAtom(playAtom)
 
   useEffect(()=>{
@@ -30,8 +31,6 @@ const Favorites = () => {
   function hndelPausePlay(){
     setPlay((prev)=>!prev)
   }
-
-
 
 
   return (
@@ -56,7 +55,7 @@ const Favorites = () => {
         }}>
           <Box>
           <Typography variant="h3">Liked Song</Typography>
-          <Typography variant="body2" >{2} Songs</Typography>
+          <Typography variant="body2" >{favrouteSongs.length} Songs</Typography>
           </Box>
         <Button variant="contained" sx={{
           height:"60px",
@@ -81,8 +80,8 @@ const Favorites = () => {
             flexDirection:"column",
             gap:"15px"
           }}>
-            {album?.musics.map((music:any , index:any) =>(
-              <MusicCard key={music._id} music={music} index={index} />
+            {favrouteSongs.length == 0 ? <h1>Empty</h1> : favrouteSongs?.map((music:any , index:any) =>(
+              <MusicCard key={music._id} music={music} index={index} isFavroute={true} />
             ))}
           </List>
         </Box>

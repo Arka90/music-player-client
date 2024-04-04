@@ -80,7 +80,10 @@ const Main = () => {
             padding:"40px",
             display:"flex",
             flexDirection:"column",
-            gap:"15px"
+            gap:"15px",
+            '@media (max-width: 780px)': {
+              padding:"20px",
+            }
           }}>
             {album?.musics.map((music:any , index:any) =>(
               <MusicCard key={music._id} music={music} index={index} />
