@@ -105,3 +105,11 @@ a {
     color-scheme: dark;
   }
 }
+
+*{
+  box-sizing: border-box;
+}
+
+.rhap_time{
+  color: #fff !important;
+}
