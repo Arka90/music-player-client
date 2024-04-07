@@ -2,7 +2,7 @@ import { Box, Button } from "@mui/material"
 import Sidenav from "./Sidenav"
 import { useState } from "react";
 import Main from "./Main";
-import AudioPlayer from 'react-h5-audio-player';
+
 import 'react-h5-audio-player/lib/styles.css';
 import { useAtom, useAtomValue } from "jotai";
 import { activeAlbumAtom } from "@/store/activeAlbum";
@@ -56,6 +56,7 @@ const Layout = () => {
          
         }
       }}
+      onClick={()=>setShowMenu(false)}
       >
 
 
@@ -101,18 +102,18 @@ sx={{
 
 >
 
-  <Button sx={{
+ {!showMenu && <Button sx={{
     color:"white",
     '@media (min-width: 1100px)': {
       display:"none"
     },
   }}
   
-  onClick={()=>{setShowMenu(!showMenu)}}
+  onClick={()=>{setShowMenu(true)}}
 
   >
  <MenuIcon fontSize="large" />
-  </Button>
+  </Button>}
 </Box>
 
 

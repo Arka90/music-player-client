@@ -2,7 +2,7 @@ import { activeSongAtom } from "@/store/activeSong";
 import { allAlbumsAtom } from "@/store/allAlbums";
 import { playAtom } from "@/store/play";
 import { playlistAtom } from "@/store/playlist";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { ScaleLoader } from "react-spinners";
 import  FavoriteBorderIcon  from '@mui/icons-material/FavoriteBorder';
@@ -16,9 +16,14 @@ const MusicCard = ({ music, index , isFavroute }: { music: any; index: any , isF
   const play = useAtomValue(playAtom)
   const albums = useAtomValue(allAlbumsAtom);
 
-  function handeMusicClick() {
+  function handeMusicClick(e:any) {
 
-    if(isFavroute){
+
+    
+
+   
+
+      if(isFavroute){
 
         setPlaylist(favrouteSongs);
         setActiveSong(index)
@@ -32,8 +37,14 @@ const MusicCard = ({ music, index , isFavroute }: { music: any; index: any , isF
     );
     setPlaylist(activePlaylist.musics);
     setActiveSong(index);
+
+
+
+
   }
-  function handelFavorite(){
+
+
+  function handelFavorite(e:any){
     if(favrouteSongs.length == 0){
       setFavrouteSongs([music]);
     }else{
@@ -51,6 +62,8 @@ const MusicCard = ({ music, index , isFavroute }: { music: any; index: any , isF
       }
       
     }
+
+    e.stopPropagation();
 
   }
 
@@ -71,7 +84,7 @@ const MusicCard = ({ music, index , isFavroute }: { music: any; index: any , isF
           backdropFilter: "blur( 7.5px )",
         },
       }}
-      onClick={handeMusicClick}
+      onClick={(e) => handeMusicClick(e)}
     >
       <Box sx={{
         width:"3%",
@@ -113,7 +126,7 @@ const MusicCard = ({ music, index , isFavroute }: { music: any; index: any , isF
         <Typography 
         variant="subtitle1">{music?.name}</Typography>
         
-        <Box
+        <Button
         onClick={handelFavorite}
         >
         {favrouteSongs.findIndex((song:any) => song._id === music._id) == -1 ? <FavoriteBorderIcon 
@@ -128,7 +141,7 @@ const MusicCard = ({ music, index , isFavroute }: { music: any; index: any , isF
         }}
         
         /> }
-        </Box>
+        </Button>
 
         </Box>
         <Box 

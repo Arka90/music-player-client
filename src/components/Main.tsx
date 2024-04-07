@@ -6,21 +6,40 @@ import PauseIcon from '@mui/icons-material/Pause';
 import MusicCard from "./MusicCard";
 import {  useAtom, useAtomValue } from "jotai";
 import { activeAlbumAtom } from "@/store/activeAlbum";
+import CircularProgress from '@mui/material/CircularProgress';
 import { playAtom } from "@/store/play";
+import Loader from "./Loader";
+import { playlistAtom } from "@/store/playlist";
 
 
 const Main = () => {
 
   const [album , setAlbum] = useState<any>();
   const activeAlbum = useAtomValue(activeAlbumAtom);
-
+  const [loading , setLoading] = useState(false);
+  const [playlist , setPlaylist] = useAtom(playlistAtom)
   const [play,setPlay] = useAtom(playAtom)
+  const isActivePlaylist = playlist[0]?._id == album?.musics[0]?._id;
+  
+  
 
   useEffect(()=>{
 
+    setLoading(true);
     async function getAlbum(){
-      const response = await axios.get(`http://localhost:8080/api/v1/album/${activeAlbum}`)
-      setAlbum(response.data.album)
+
+      try{
+        const response = await axios.get(`http://localhost:8080/api/v1/album/${activeAlbum}`)
+        setAlbum(response.data.album)
+      }catch(error){
+        
+        console.log(error);
+
+      }finally{
+setLoading(false)
+      }
+
+
     }
     getAlbum();
 
@@ -36,7 +55,7 @@ const Main = () => {
 
 
   return (
-    <Box
+     <Box
     sx={{
       bgcolor:"#212121",
       height:"100vh",
@@ -44,9 +63,12 @@ const Main = () => {
       borderRadius:"4px",
     }}
     >
-      <Box sx={{
+      {loading ? <Loader/> : <>
+      
+       <Box sx={{
         display:"flex",
         gap:"25px",
+        marginTop:"60px"
       }} >
         <img src={`http://localhost:8080/uploads/${album?.image}`} width={200} height={200} />
         <Box sx={{
@@ -71,7 +93,7 @@ const Main = () => {
 
         }} 
         onClick={hndelPausePlay}
-        >{play ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />}</Button>
+        >{isActivePlaylist && play ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />}</Button>
         </Box>
       </Box>
       <Box>
@@ -91,7 +113,10 @@ const Main = () => {
           </List>
         </Box>
       </Box>
-    </Box>
+      </>
+      }
+    </Box> 
+  
   )
 }
 

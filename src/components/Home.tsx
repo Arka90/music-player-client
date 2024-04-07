@@ -4,25 +4,34 @@ import axios from "axios";
 import { useAtomValue } from "jotai"
 import { useEffect, useState } from "react"
 import HomeMusicCard from "./HomeMusicCard";
+import Loader from "./Loader";
 
 const Home = () => {
 
   const albums = useAtomValue(allAlbumsAtom);
   const [song,setSong] = useState<any>([]);
-
+  const [loading , setLoading] = useState<boolean>(false);
   
   useEffect(()=>{
 
     async function getAllSongs(){
-      
-      let response = await axios.get('http://localhost:8080/api/v1/musics');
+      setLoading(true)
+      try{
+        let response = await axios.get('http://localhost:8080/api/v1/musics');
+        setSong(response.data.music);
 
-      console.log(response);
-      
-      setSong(response.data.music);
+      }catch(error){
+        console.log(error);
+        
+
+      }finally{
+        setLoading(false)
+      }
 
     }
+
     getAllSongs();
+
 
   },[])
 
@@ -35,7 +44,7 @@ const Home = () => {
       padding:"18px",
       borderRadius:"4px",
     }}>
-    <Box
+    {loading ? <Loader/> : <Box
     sx={{
 
      
@@ -52,7 +61,7 @@ const Home = () => {
         ))
       }
       
-    </Box>
+    </Box>}
 
     </Box>
 

@@ -8,6 +8,8 @@ import {  useAtom, useAtomValue } from "jotai";
 import { activeAlbumAtom } from "@/store/activeAlbum";
 import { playAtom } from "@/store/play";
 import { favrouteSongsAtom } from './../store/favoriteSongs';
+import { playlistAtom } from "@/store/playlist";
+import EmptyFav from "./EmptyFav";
 
 
 const Favorites = () => {
@@ -15,6 +17,10 @@ const Favorites = () => {
   const activeAlbum = useAtomValue(activeAlbumAtom);
   const favrouteSongs = useAtomValue(favrouteSongsAtom)
   const [play,setPlay] = useAtom(playAtom)
+  const [playlist , setPlaylist] = useAtom(playlistAtom)
+  
+  const isActivePlaylist = playlist[0]?._id == favrouteSongs[0]?._id;
+
 
   useEffect(()=>{
 
@@ -69,7 +75,7 @@ const Favorites = () => {
 
         }} 
         onClick={hndelPausePlay}
-        >{play ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />}</Button>
+        >{isActivePlaylist && play ? <PauseIcon fontSize="large" /> : <PlayArrowIcon fontSize="large" />}</Button>
         </Box>
       </Box>
       <Box>
@@ -80,7 +86,7 @@ const Favorites = () => {
             flexDirection:"column",
             gap:"15px"
           }}>
-            {favrouteSongs.length == 0 ? <h1>Empty</h1> : favrouteSongs?.map((music:any , index:any) =>(
+            {favrouteSongs.length == 0 ? <EmptyFav/> : favrouteSongs?.map((music:any , index:any) =>(
               <MusicCard key={music._id} music={music} index={index} isFavroute={true} />
             ))}
           </List>

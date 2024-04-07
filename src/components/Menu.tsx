@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material"
+import { Box, Button, Typography } from "@mui/material"
 import AlbumCard from "./AlbumCard"
 import { useEffect, useState } from "react"
 import axios from "axios";
@@ -6,7 +6,8 @@ import {useAtom} from 'jotai'
 import { activeAlbumAtom } from "@/store/activeAlbum";
 import { allAlbumsAtom } from "@/store/allAlbums";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { FavoriteOutlined, Home } from "@mui/icons-material";
+import { ArrowBack, FavoriteOutlined, Home } from "@mui/icons-material";
+import { showMenuAtom } from "@/store/showMenu";
 
 const Menu = () => {
 
@@ -15,6 +16,9 @@ const Menu = () => {
   const [albums , setAlbums] = useAtom(allAlbumsAtom);
 
   const [activeAlbum , setActiveAlbum] = useAtom(activeAlbumAtom);
+
+  const [showMenu , setShowMenu] = useAtom(showMenuAtom)
+
 
   useEffect(()=>{
 
@@ -43,6 +47,7 @@ const Menu = () => {
       display:"flex",
       flexDirection:"column",
       gap:"10px",
+      position:"relative"
 
 
     }}
@@ -50,6 +55,27 @@ const Menu = () => {
     
     boxShadow={1}
     >
+
+<Box sx={{
+  position:"absolute",
+  top:10,
+  right:0
+}}>
+
+<Button 
+
+onClick={()=>setShowMenu(false)}
+
+>
+
+<ArrowBack fontSize="large" sx={{
+
+  color:"#fff" 
+}}
+ />
+</Button>
+
+          </Box>
 
       <Box>
 
@@ -65,6 +91,8 @@ const Menu = () => {
         onClick={()=>setActiveAlbum("")
         }
         >
+
+
 
 
         <Home sx={{
@@ -108,9 +136,6 @@ const Menu = () => {
         sx={{
           color:activeAlbum === 'favorites' ?  "#1db954" : "#fff",
           fontSize:"1.2rem",
-          
-
-         
         }}
 
         >Favorites</Typography>
